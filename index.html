@@ -1,129 +1,345 @@
 
-<html><head><base href="https://websim-creation-engine.ai/wallet-summary-tool/" />
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Инструмент Суммирования Кошельков</title>
-    <style>
-      body {
-        font-family: 'Roboto', sans-serif;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        color: #333;
-      }
-      h1 {
-        text-align: center;
-        color: #2c3e50;
-        margin-bottom: 30px;
-      }
-      .container {
-        background-color: #ffffff;
-        border-radius: 10px;
-        padding: 30px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-      }
-      textarea {
-        width: 100%;
-        height: 200px;
-        margin-bottom: 20px;
-        padding: 15px;
-        border: 2px solid #3498db;
-        border-radius: 8px;
-        font-size: 14px;
-        transition: border-color 0.3s ease;
-      }
-      textarea:focus {
-        outline: none;
-        border-color: #2980b9;
-      }
-      button {
-        background-color: #3498db;
-        border: none;
-        color: white;
-        padding: 12px 24px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        margin: 4px 2px;
-        cursor: pointer;
-        border-radius: 25px;
-        transition: all 0.3s ease;
-        box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-      }
-      button:hover {
-        background-color: #2980b9;
-        transform: translateY(-2px);
-        box-shadow: 0 5px 10px rgba(0,0,0,0.2);
-      }
-      #result {
-        background-color: #f9f9f9;
-        border: 2px solid #e74c3c;
-        border-radius: 8px;
-        padding: 15px;
-        margin-top: 20px;
-        font-family: 'Courier New', monospace;
-        white-space: pre-wrap;
-        word-break: break-all;
-      }
-      .button-container {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
-      }
-    </style>
-    </head>
-    <body>
-      <div class="container">
-        <h1>Инструмент Суммирования Кошельков</h1>
-        <textarea id="input" placeholder="Введите информацию о кошельках здесь (формат: кошелек;сумма)"></textarea>
-        <div class="button-container">
-          <button onclick="processInput()">Обработать</button>
-          <button onclick="copyResult()">Копировать результат</button>
-        </div>
-        <div id="result"></div>
+<html><head><base href="https://web-sim-engine.com/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YupLand "Сферы Эонов"</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a2e;
+    color: #e0e0e0;
+    margin: 0;
+    padding: 10px;
+  }
+  .container {
+    max-width: 100%;
+    margin: 0 auto;
+  }
+  h1 {
+    text-align: center;
+    color: #4cc9f0;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  .spheres {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .sphere {
+    background-color: #16213e;
+    border-radius: 10px;
+    padding: 10px;
+    width: calc(33.33% - 10px);
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+  }
+  .sphere:hover {
+    transform: translateY(-3px);
+  }
+  .sphere h3 {
+    font-size: 12px;
+    margin-bottom: 8px;
+    color: #4cc9f0;
+  }
+  .sphere-count {
+    font-size: 18px;
+    font-weight: bold;
+    color: #f72585;
+  }
+  .leaderboard {
+    background-color: #16213e;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+  }
+  .leaderboard h2 {
+    margin-top: 0;
+    color: #4cc9f0;
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 18px;
+  }
+  table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 5px;
+  }
+  th, td {
+    padding: 10px;
+    text-align: left;
+    font-size: 14px;
+  }
+  th {
+    background-color: #0f3460;
+    color: #4cc9f0;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  tr {
+    background-color: #1a1a2e;
+  }
+  .loading {
+    text-align: center;
+    font-size: 16px;
+    margin-top: 20px;
+    color: #4cc9f0;
+  }
+  .collection-link {
+    display: inline-block;
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4cc9f0;
+    color: #1a1a2e;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+  }
+  .collection-link:hover {
+    background-color: #3a9fc0;
+  }
+  .sphere-exchange-info {
+    background-color: #16213e;
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .sphere-exchange-info h3 {
+    color: #4cc9f0;
+    margin-top: 0;
+  }
+  .sphere-exchange-info ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+  .sphere-exchange-info li {
+    margin-bottom: 5px;
+  }
+  .highlighted-text {
+    color: #f72585;
+    font-weight: bold;
+    margin-top: 15px;
+    font-style: italic;
+  }
+  .sphere-list {
+    display: flex;
+    flex-direction: column;
+  }
+  .sphere-list-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    padding: 5px;
+    background: linear-gradient(45deg, #16213e, #1a1a2e);
+    border-radius: 5px;
+    transition: transform 0.2s;
+  }
+  .sphere-list-item:hover {
+    transform: scale(1.02);
+  }
+  .sphere-list-item span:first-child {
+    color: #4cc9f0;
+    margin-right: 10px;
+  }
+  .sphere-list-item span:last-child {
+    color: #f72585;
+    margin-left: 10px;
+  }
+  @media (max-width: 600px) {
+    .sphere {
+      width: calc(50% - 10px);
+    }
+    th, td {
+      padding: 8px;
+      font-size: 12px;
+    }
+    .sphere-list-item {
+      flex-direction: column;
+      align-items: center;
+    }
+    .sphere-list-item span:first-child,
+    .sphere-list-item span:last-child {
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Событие YupLand "Сферы Эонов"</h1>
+    <div class="spheres">
+      <div class="sphere">
+        <h3>Сферы 1 Эона</h3>
+        <div class="sphere-count" id="count1">-</div>
       </div>
+      <div class="sphere">
+        <h3>Сферы 2 Эона</h3>
+        <div class="sphere-count" id="count2">-</div>
+      </div>
+      <div class="sphere">
+        <h3>Сферы 3 Эона</h3>
+        <div class="sphere-count" id="count3">-</div>
+      </div>
+      <div class="sphere">
+        <h3>Сферы 4 Эона</h3>
+        <div class="sphere-count" id="count4">-</div>
+      </div>
+      <div class="sphere">
+        <h3>Сферы 5 Эона</h3>
+        <div class="sphere-count" id="count5">-</div>
+      </div>
+      <div class="sphere">
+        <h3>Сферы 6 Эона</h3>
+        <div class="sphere-count" id="count6">-</div>
+      </div>
+      <div class="sphere">
+        <h3>Сферы 7 Эона</h3>
+        <div class="sphere-count" id="count7">-</div>
+      </div>
+    </div>
     
-      <script>
-        function processInput() {
-          const input = document.getElementById('input').value;
-          const lines = input.split('\n');
-          const wallets = {};
-    
-          lines.forEach(line => {
-            const [wallet, amount] = line.replace(/\t;\t/g, ';').split(';');
-            if (wallet && amount) {
-              wallets[wallet] = (wallets[wallet] || 0) + parseFloat(amount);
+    <div class="sphere-exchange-info">
+      <h3>Сферы возможно обменять на Юпиков:</h3>
+      <div class="sphere-list">
+        <div class="sphere-list-item"><span>7 сфер</span><span>1 поколение (вселенский)</span></div>
+        <div class="sphere-list-item"><span>6 сфер</span><span>2 поколение (галактический)</span></div>
+        <div class="sphere-list-item"><span>5 сфер</span><span>3 поколение (звездный)</span></div>
+        <div class="sphere-list-item"><span>4 сферы</span><span>4 поколение (мировой)</span></div>
+        <div class="sphere-list-item"><span>3 сферы</span><span>легендарный</span></div>
+        <div class="sphere-list-item"><span>2 сферы</span><span>эпический</span></div>
+        <div class="sphere-list-item"><span>1 сфера</span><span>редкий</span></div>
+      </div>
+      <p class="highlighted-text">
+        Сферы должны быть разные. Каждый день в боксе будет 1 из сфер - выбирается победитель голосованием сообщества.<br><br>
+        1 эксклюзивный Юпик может ловить 1 сферу в неделю.
+      </p>
+    </div>
+
+    <div class="leaderboard">
+      <h2>Лидерборд владельцев Сфер Эонов</h2>
+      <table id="leaderboardTable">
+        <thead>
+          <tr>
+            <th>Адрес кошелька</th>
+            <th>Всего NFT</th>
+            <th>Уникальных NFT</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="3" class="loading">Загрузка данных...</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="text-align: center;">
+      <a href="https://getgems.io/yupland" class="collection-link" target="_blank">Коллекция эксклюзивных юпиков</a>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js"></script>
+  <script>
+    const API_ENDPOINT = 'https://graph.mintbase.xyz/mainnet';
+    const API_KEY = 'anon';
+
+    async function fetchNFTData() {
+      try {
+        const response = await axios.post(API_ENDPOINT, {
+          query: `
+            {
+              mb_views_nft_tokens(
+                where: {nft_contract_id: {_eq: "yuplandshop.mintbase1.near"}, owner: {_gt: "0000000000000000000000000000000000000000000000000000000000000000"}, title: {_iregex: "Ether - Ancient"}}
+              ) {
+                owner
+                title
+                media
+              }
             }
-          });
-    
-          const result = Object.entries(wallets)
-            .map(([wallet, total]) => `${wallet};${total}`)
-            .join('\n');
-    
-          document.getElementById('result').textContent = result;
+          `
+        }, {
+          headers: {
+            'mb-api-key': API_KEY,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        return response.data.data.mb_views_nft_tokens;
+      } catch (error) {
+        console.error('Error fetching NFT data:', error);
+        return [];
+      }
+    }
+
+    function updateSphereCounts(nftData) {
+      const counts = [0, 0, 0, 0, 0, 0, 0];
+      
+      nftData.forEach(nft => {
+        for (let i = 1; i <= 7; i++) {
+          if (nft.title.includes(i.toString())) {
+            counts[i - 1]++;
+            break;
+          }
         }
-    
-        function copyResult() {
-          const result = document.getElementById('result');
-          const textArea = document.createElement('textarea');
-          textArea.value = result.textContent;
-          document.body.appendChild(textArea);
-          textArea.select();
-          document.execCommand('copy');
-          document.body.removeChild(textArea);
-          
-          // Визуальная обратная связь вместо alert
-          const copyButton = document.querySelector('button:last-of-type');
-          const originalText = copyButton.textContent;
-          copyButton.textContent = 'Скопировано!';
-          copyButton.style.backgroundColor = '#27ae60';
-          setTimeout(() => {
-            copyButton.textContent = originalText;
-            copyButton.style.backgroundColor = '';
-          }, 2000);
+      });
+
+      for (let i = 0; i < 7; i++) {
+        document.getElementById(`count${i + 1}`).textContent = counts[i];
+      }
+    }
+
+    function updateLeaderboard(nftData) {
+      const leaderboard = {};
+      
+      nftData.forEach(nft => {
+        if (!leaderboard[nft.owner]) {
+          leaderboard[nft.owner] = { total: 0, unique: new Set() };
         }
-      </script>
-    </body>
-    </html>
+        leaderboard[nft.owner].total++;
+        leaderboard[nft.owner].unique.add(nft.title);
+      });
+
+      const leaderboardArray = Object.entries(leaderboard)
+        .map(([owner, data]) => ({
+          owner,
+          total: data.total,
+          unique: data.unique.size
+        }))
+        .sort((a, b) => b.total - a.total);
+
+      const tbody = document.querySelector('#leaderboardTable tbody');
+      tbody.innerHTML = '';
+
+      leaderboardArray.forEach(entry => {
+        const row = tbody.insertRow();
+        row.insertCell(0).textContent = entry.owner;
+        row.insertCell(1).textContent = entry.total;
+        row.insertCell(2).textContent = entry.unique;
+      });
+    }
+
+    async function updateNFTData() {
+      const nftData = await fetchNFTData();
+      if (nftData.length > 0) {
+        updateSphereCounts(nftData);
+        updateLeaderboard(nftData);
+      } else {
+        document.querySelector('#leaderboardTable tbody').innerHTML = '<tr><td colspan="3" class="loading">Ошибка загрузки данных. Пожалуйста, попробуйте позже.</td></tr>';
+      }
+    }
+
+    updateNFTData();
+    setInterval(updateNFTData, 5 * 60 * 1000);
+  </script>
+</body>
+</html>
