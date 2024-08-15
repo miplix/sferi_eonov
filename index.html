@@ -281,7 +281,7 @@
           query: `
             {
               mb_views_nft_tokens(
-                where: {nft_contract_id: {_eq: "yuplandshop.mintbase1.near"}, owner: {_gt: "0000000000000000000000000000000000000000000000000000000000000000", "darai_collection.near"}, title: {_iregex: "Ancient"}}
+                where: {nft_contract_id: {_eq: "yuplandshop.mintbase1.near"}, owner: {_gt: "darai_collection.near"}, title: {_iregex: "Ancient"}}
               ) {
                 owner
                 title
